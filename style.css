@@ -1,0 +1,212 @@
+/* --- Base Styles & Colors --- */
+:root {
+    --terminal-bg-gradient: linear-gradient(135deg, #1e1e2f 0%, #1a1a1a 100%);
+    --body-bg-gradient: radial-gradient(ellipse at center, #3a3d4a 0%, #0a0a1a 100%);
+    --terminal-text: #00ff00;
+    --shadow-color: rgba(0, 255, 0, 0.2);
+    --link-color: #00e0e0;
+    --error-color: #ff5f56;
+    
+    /* Linux-ish Prompt Colors */
+    --prompt-user: #87d7ff;
+    --prompt-host: #ff87d7;
+    --prompt-char: #00ff00;
+
+    --title-bar: #333;
+    --button-red: #ff5f56;
+    --button-yellow: #ffbd2e;
+    --button-green: #27c93f;
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    font-family: 'Source Code Pro', monospace;
+    background: var(--body-bg-gradient);
+    color: var(--terminal-text);
+    display: grid;
+    place-items: center;
+    padding: 20px;
+    overflow: hidden;
+}
+
+/* --- Terminal Window --- */
+.terminal-window {
+    width: 100%;
+    max-width: 800px;
+    height: 500px;
+    background: var(--terminal-bg-gradient);
+    border: 1px solid #444;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 10px 50px var(--shadow-color);
+    display: flex;
+    flex-direction: column;
+    /* Fade-in animation for the window */
+    animation: fadeIn 0.5s ease-out;
+}
+
+/* --- Title Bar --- */
+.title-bar {
+    background-color: var(--title-bar);
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #444;
+    flex-shrink: 0;
+}
+
+.title-bar-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.title-bar-button {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+}
+.title-bar-button.red { background-color: var(--button-red); }
+.title-bar-button.yellow { background-color: var(--button-yellow); }
+.title-bar-button.green { background-color: var(--button-green); }
+
+.title-bar-text {
+    color: #ccc;
+    margin: 0 auto;
+    font-size: 0.9rem;
+    transform: translateX(-24px); /* Offset to center */
+}
+
+/* --- Terminal Body --- */
+.terminal-body {
+    flex-grow: 1;
+    padding: 20px;
+    position: relative;
+    overflow-y: auto; /* Allow scrolling */
+    /* Add the scanlines animation */
+    background: linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0.03) 50%,
+        transparent 50%
+    );
+    background-size: 100% 4px;
+    animation: scanlines 0.1s linear infinite;
+}
+
+/* Custom scrollbar for terminal */
+.terminal-body::-webkit-scrollbar {
+    width: 8px;
+}
+.terminal-body::-webkit-scrollbar-track {
+    background: #222;
+}
+.terminal-body::-webkit-scrollbar-thumb {
+    background: var(--terminal-text);
+    border-radius: 4px;
+}
+.terminal-body::-webkit-scrollbar-thumb:hover {
+    background: #fff;
+}
+
+/* --- Output & Input Styling --- */
+#terminal-output p {
+    margin: 0;
+    white-space: pre-wrap; /* Allows text to wrap */
+    word-break: break-all;
+    text-shadow: 0 0 3px var(--terminal-text);
+}
+
+/* Style for logged commands */
+#terminal-output .output-command {
+    color: #aaa; /* Dimmed color */
+}
+
+/* Style for errors */
+#terminal-output .output-error {
+    color: var(--error-color);
+    text-shadow: 0 0 5px var(--error-color);
+}
+
+/* Style for links */
+#terminal-output .output-link {
+    color: var(--link-color);
+    text-decoration: underline;
+    text-shadow: 0 0 5px var(--link-color);
+}
+
+.prompt-line {
+    display: flex;
+    align-items: center;
+}
+
+.prompt {
+    margin-right: 10px;
+    white-space: nowrap;
+}
+
+/* Coloring the prompt */
+.prompt-user { color: var(--prompt-user); }
+.prompt-at { color: #aaa; }
+.prompt-host { color: var(--prompt-host); }
+.prompt-char { color: var(--prompt-char); }
+
+/* The actual input field */
+.command-input {
+    flex-grow: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--terminal-text);
+    font-family: 'Source Code Pro', monospace;
+    font-size: 1rem;
+    text-shadow: 0 0 3px var(--terminal-text);
+    padding: 0;
+    
+    /* This creates the block-style cursor */
+    caret-shape: block;
+    caret-color: var(--terminal-text);
+}
+
+/* Blinking cursor animation for when input is not focused */
+.cursor {
+    width: 1ch;
+    height: 1.2em;
+    background-color: var(--terminal-text);
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 2px;
+    animation: blink 1s step-end infinite;
+}
+
+/* Hide our fake cursor when the real one (input) is active */
+.command-input:focus + .cursor {
+    display: none;
+}
+
+/* --- Keyframe Animations --- */
+
+/* Blinking cursor */
+@keyframes blink {
+    from, to { background-color: transparent; }
+    50% { background-color: var(--terminal-text); }
+}
+
+/* Fade-in for window */
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.95) translateY(20px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* Scanlines movement */
+@keyframes scanlines {
+    0% { background-position: 0 0; }
+    100% { background-position: 0 4px; }
+}

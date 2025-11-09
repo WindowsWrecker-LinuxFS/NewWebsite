@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Terminal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="terminal-window" id="terminal-window">
+        
+        <div class="title-bar">
+            <div class="title-bar-buttons">
+                <div class="title-bar-button red"></div>
+                <div class="title-bar-button yellow"></div>
+                <div class="title-bar-button green"></div>
+            </div>
+            <div class="title-bar-text">user@dev-machine: ~</div>
+        </div>
+        
+        <div class="terminal-body" id="terminal-body">
+            <div id="terminal-output"></div>
+            
+            <div class="prompt-line">
+                <span class="prompt">
+                    <span class="prompt-user">user</span><span class="prompt-at">@</span><span class="prompt-host">dev-machine</span><span class="prompt-char">:~$</span>
+                </span>
+                <input type="text" id="command-input" class="command-input" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" autofocus />
+                <span class="cursor"></span>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js" defer></script>
+</body>
+</html>
